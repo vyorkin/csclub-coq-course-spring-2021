@@ -182,15 +182,16 @@ for it. |*)
 Fixpoint divn (m n : nat) : nat :=
   if n is S n' then
     if subn m n' is S m'
-    then S (divn m' n)
+    then S (m' / n)
     else O
-  else O.
+  else O
+where "m / n" := (divn m n) : nat_scope.
 
-Compute divn (S (S (S (S O)))) (S (S O)).
-Compute divn (S (S (S O))) (S (S (S O))).
-Compute divn (S (S (S (S (S (S (S (S O)))))))) (S (S O)).
-Compute divn (S (S (S (S (S O))))) (S (S O)).
-Compute divn (S O) O.
-Compute divn O O.
+Compute (S (S (S (S O)))) / (S (S O)).
+Compute (S (S (S O))) / (S (S (S O))).
+Compute (S (S (S (S (S (S (S (S O)))))))) / (S (S O)).
+Compute (S (S (S (S (S O))))) / (S (S O)).
+Compute (S O) / O.
+Compute O / O.
 
 End My.
