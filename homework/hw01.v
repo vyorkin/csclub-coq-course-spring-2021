@@ -120,11 +120,8 @@ Compute subn (S O) (S (S (S O))).
 natural numbers `m` and `n` and returns the result of their multiplication.
 Write some unit tests. |*)
 
-Fixpoint addn (m n: nat) : nat :=
-  match m, n with
-  | m', O => m'
-  | m', S n' => S (addn m' n')
-  end.
+Fixpoint addn (n m : nat) : nat :=
+  if n is S n' then S (addn n' m) else m.
 
 Compute addn (S (S (S O))) (S (S O)).
 
