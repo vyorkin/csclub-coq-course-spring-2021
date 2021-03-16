@@ -103,39 +103,38 @@ Compute dec2 O.
 natural numbers `m` and `n` and returns the result of subtracting `n` from `m`.
 E.g. `subn 5 3` returns `2`. Write some unit tests. |*)
 
-Fixpoint subn (m n : nat) : nat :=
-  if m is S m' then
-    if n is S n'
-    then subn m' n'
-    else m
-  else m.
+Fixpoint subn (n m : nat) : nat :=
+  if n is S n' then
+    if m is S m'
+    then n' - m'
+    else n
+  else n
+where "m - n" := (subn m n) : nat_scope.
 
-Compute subn (S (S O)) O.
-Compute subn (S (S (S O))) (S O).
-Compute subn (S (S (S O))) (S (S O)).
-Compute subn (S (S (S O))) (S (S (S O))).
-Compute subn (S O) (S (S (S O))).
+Compute (S (S O)) - O.
+Compute (S (S (S O))) - (S O).
+Compute (S (S (S O))) - (S (S O)).
+Compute (S (S (S O))) - (S (S (S O))).
+Compute (S O) - (S (S (S O))).
 
 (*| 2c. Define an `muln` function of type `nat -> nat -> nat` which takes two
 natural numbers `m` and `n` and returns the result of their multiplication.
 Write some unit tests. |*)
 
 Fixpoint addn (n m : nat) : nat :=
-  if n is S n' then S (addn n' m) else m.
+  if n is S n0 then S (n0 + m) else m
+where "n + m" := (addn n m) : nat_scope.
 
-Compute addn (S (S (S O))) (S (S O)).
+Compute (S (S (S O))) + (S (S O)).
 
-Fixpoint muln (m n : nat) : nat :=
-  match m, n with
-  | O, _ => O
-  | _, O => O
-  | S m', S n' => addn m (muln m n')
-  end.
+Fixpoint muln (n m : nat) : nat :=
+  if n is S n0 then (m + n0 * m) else O
+where "n * m" := (muln n m) : nat_scope.
 
-Compute muln (S (S (S O))) (S (S O)).
-Compute muln (S (S (S O))) (S (S (S O))).
-Compute muln (S O) O.
-Compute muln O O.
+Compute (S (S (S O))) * (S (S O)).
+Compute (S (S (S O))) * (S (S (S O))).
+Compute (S O) * O.
+Compute O * O.
 
 (** 2d. Implement equality comparison function `eqn` on natural numbers of
 type `nat -> nat -> bool`. It returns true if and only if the input numbers are
@@ -160,13 +159,15 @@ than or equal to `n`. Your solution must not use recursion but you may reuse any
 of the functions you defined in this module so far. *)
 
 Definition leq (m n : nat) : bool :=
-  if subn m n is O then true else false.
+  if m - n is O then true else false.
 
-Compute leq (S O) O.
-Compute leq (S (S O)) (S O).
-Compute leq (S (S O)) (S (S (S O))).
-Compute leq O O.
-Compute leq (S O) (S O).
+Notation "m <= n" := (leq m n) : nat_scope.
+
+Compute (S O) <= O.
+Compute (S (S O)) <= (S O).
+Compute (S (S O)) <= (S (S (S O))).
+Compute O <= O.
+Compute (S O) <= (S O).
 
 (*| ---------------------------------------------------------------------------- |*)
 
