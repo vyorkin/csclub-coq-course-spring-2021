@@ -4,7 +4,7 @@ The basics of Coq and how to interact with it
 =============================================
 
 :Author: Anton Trunov
-:Date: Jan 11, 2021
+:Date: March 11, 2021
 
 
 ============================================================
@@ -372,7 +372,7 @@ Compute is_odd (S (S O)).
 
 End My.
 
-(*| After closing a module, the entities defined in it, get prefixed with the
+(*| After closing a module, the entities defined in it get prefixed with the
 module's name |*)
 Check My.nat.
 Check My.addn.
@@ -396,7 +396,7 @@ Print addb.
 (*| It's called `addb` because it is essentially addition modulo 2. |*)
 
 (*| Some interactive queries that helps us explore libraries:
-[About] tells you more than [Check] usually: |*)
+`About` tells you more than `Check` usually: |*)
 About nat.
 About S.
 
