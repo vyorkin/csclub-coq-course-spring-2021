@@ -83,12 +83,18 @@ Definition forall_disj_comm :
        end
     ).
 
+
 Definition not_exists_forall_not :
   ~(exists x, P x) -> forall x, ~P x
 :=
+  fun nex =>
+    fun x px => nex (ex_intro P x px).
 
 Definition exists_forall_not_ :
-(exists x, A -> P x) -> (forall x, ~P x) -> ~A.
+  (exists x, A -> P x) -> (forall x, ~P x) -> ~A
+:=
+  fun '(ex_intro x apx) =>
+    fun all_npx a => all_npx x (apx a).
 
 (** Extra exercise (feel free to skip): the dual Frobenius rule *)
 Definition LEM :=
@@ -98,12 +104,10 @@ Definition Frobenius2 :=
   forall (A : Type) (P : A -> Prop) (Q : Prop),
     (forall x, Q \/ P x) <-> (Q \/ forall x, P x).
 
-Definition lem_iff_Frobenius2 :
-  LEM <-> Frobenius2
-:=
+(* Definition lem_iff_Frobenius2 : *)
+(*   LEM <-> Frobenius2. *)
 
 End Quantifiers.
-
 
 
 
@@ -114,6 +118,10 @@ Section Equality.
 Definition f_congr {A B} (f : A -> B) (x y : A) :
   x = y  ->  f x = f y
 :=
+  fun proof =>
+    match proof in (_ = y) return (f x = f y) with
+    | eq_refl => eq_refl
+    end.
 
 Definition f_congr' A B (f g : A -> B) (x y : A) :
   f = g  ->  x = y  ->  f x = g y
