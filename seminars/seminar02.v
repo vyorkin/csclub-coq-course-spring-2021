@@ -1,26 +1,46 @@
 Section PropositionalLogic.
 
+From mathcomp Require Import ssrfun.
+
 Variables A B C : Prop.
 
 Definition anb1 :
   A /\ B -> A
 :=
+  fun '(conj a b) => a.
+
+Definition impl_trans' :
+  (A -> B) -> (B -> C) -> A -> C
+:=
+  fun ab bc a => bc (ab a).
+
+About catcomp.
 
 Definition impl_trans :
   (A -> B) -> (B -> C) -> A -> C
 :=
+  catcomp.
 
 Definition HilbertS :
   (A -> B -> C) -> (A -> B) -> A -> C
 :=
+  fun abc ab a => abc a (ab a).
 
 Definition DNE_triple_neg :
   ~ ~ ~ A -> ~ A
+  (* (((A -> False) -> False) -> False) -> A -> False *)
 :=
+  fun nnna a =>
+    nnna (fun na => na a).
 
 Definition or_comm :
   A \/ B -> B \/ A
-:=
+  :=
+    fun ab =>
+      match ab with
+      | or_introl a => or_intror a
+      | or_intror b => or_introl b
+      end.
 
 End PropositionalLogic.
 
@@ -34,10 +54,34 @@ Variable P Q : T -> Prop.
 Definition forall_conj_comm :
   (forall x, P x /\ Q x) <-> (forall x, Q x /\ P x)
 :=
+  conj
+    (fun all_pq x =>
+       match all_pq x with
+       | conj px qx => conj qx px
+       end
+    )
+    (fun all_qp x =>
+       match all_qp x with
+       | conj qx px => conj px qx
+       end
+    ).
 
 Definition forall_disj_comm :
   (forall x, P x \/ Q x) <-> (forall x, Q x \/ P x)
 :=
+  conj
+    (fun all_pq x =>
+       match all_pq x with
+       | or_introl p => or_intror p
+       | or_intror q => or_introl q
+       end
+    )
+    (fun all_qp x =>
+       match all_qp x with
+       | or_introl q => or_intror q
+       | or_intror p => or_introl p
+       end
+    ).
 
 Definition not_exists_forall_not :
   ~(exists x, P x) -> forall x, ~P x
