@@ -126,6 +126,18 @@ Definition f_congr {A B} (f : A -> B) (x y : A) :
 Definition f_congr' A B (f g : A -> B) (x y : A) :
   f = g  ->  x = y  ->  f x = g y
 :=
+  fun pfg pxy =>
+    match pfg, pxy with
+    | eq_refl, eq_refl => eq_refl
+    end.
+
+(* Definition f_congr'' A B (f g : A -> B) (x y : A) : *)
+(*   f = g  ->  x = y  ->  f x = g y *)
+(* := *)
+(*   fun pfg => *)
+(*     match pfg in (_ = g') return (x = y -> f x = g' y) with *)
+(*     | eq_refl => f_congr f *)
+(*     end. *)
 
 (** extra exercise *)
 Definition congId A {x y : A} (p : x = y) :
